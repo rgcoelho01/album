@@ -41,6 +41,20 @@
       <dd>Começa em 7 e vai diminuindo a cada repasse.</dd>
     </dl>
 
+    <h2>Exemplo de busca</h2>
+    <p>Suponha que o <strong>ALUNO-03</strong> queira encontrar a figurinha <code>FIG-12</code>. Ele pode enviar a seguinte mensagem
+    para um vizinho:</p>
+    <pre><code>{{
+        "type": "SEARCH",
+        "message_id": "MSG-0001",
+        "origin_peer_id": "ALUNO03",
+        "sender_peer_id": "ALUNO03",
+        "receiver_peer_id": "ALUNO01",
+        "query_id": "550e8400-e29b-41d4-a716-446655440000",
+        "ttl": 7,
+        "sticker_id": "FIG-12.PNG"
+    }</code></pre>
+
     <h2>Exemplo de reenvio</h2>
     <p>Se o <strong>ALUNO-01</strong> receber essa busca e repassar para outro vizinho, a mensagem poderia ficar assim:</p>
 

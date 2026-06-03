@@ -19,12 +19,12 @@
     <h1>Sistema de Figurinhas P2P</h1>
 
     <p>Cada aluno criará uma figurinha própria em formato PNG, e o sistema deverá permitir cadastrar figurinhas, consultar quais figurinhas um colega possui, buscar figurinhas na rede e realizar trocas entre pares.</p>
-
+    <p> Você pode baixar o template da figurinha <a href="images/FIG-XX.png">aqui</a>.</p>
     <h2>Visão Geral</h2>
     <p>Na primeira etapa, a descoberta de figurinhas deverá ser feita por inundação em uma rede P2P não estruturada. Cada grupo implementará seu sistema de forma independente, mas todos deverão seguir exatamente os padrões descritos abaixo para que seja possível realizar testes de interoperabilidade entre grupos.</p>
 
     <h2>Regras do trabalho</h2>
-    <p>Cada aluno será o autor de 1 figurinha única, identificada por um código exclusivo. A distribuição inicial das posses deverá considerar que um aluno pode ter cópias lógicas de figurinhas, registradas no inventário do sistema, mesmo que o arquivo de imagem exista em mais de um nó.</p>
+    <p>Cada aluno será o autor de 1 figurinha única, identificada por um código exclusivo. A distribuição inicial das posses deverá considerar que um aluno inicia com 28 cópias lógicas de sua figurinha, registradas no inventário do sistema, o arquivo da imagem ficará hospedado em uma URL específica.</p>
     <p>O sistema deverá funcionar sem servidor central para busca de figurinhas. Na busca por inundação, uma consulta recebida por um nó deve ser repassada aos vizinhos, exceto ao remetente, até que o TTL chegue a zero ou a figurinha seja encontrada; além disso, mensagens repetidas devem ser ignoradas por meio de um identificador único de consulta.</p>
 
     <h2>Padrões obrigatórios</h2>
@@ -39,7 +39,7 @@
         <tr><td>Formato das mensagens</td><td>JSON UTF-8.</td></tr>
         <tr><td>Identificador do nó</td><td>peer_id no formato ALUNO-YY (ex.: ALUNO-02). <a href="lista-chamada.html">Seguindo a lista de chamada</a></td></tr>
         <tr><td>Identificador da figurinha</td><td>sticker_id no formato FIG-XX (ex.: FIG-12).</td></tr>
-        <tr><td>Nome do arquivo JPG</td><td>FIG-XX.jpg.</td></tr>
+        <tr><td>Nome do arquivo PNG</td><td>FIG-XX.</td></tr>
         <tr><td>Porta de escuta</td><td>8080</td></tr>
         <tr><td>Relógio lógico da busca</td><td>Campo ttl obrigatório em toda mensagem de busca. Padrão 7</td></tr>
         <tr><td>Identificador da busca</td><td>Campo query_id obrigatório, globalmente único. UUID, gerar random</td></tr>
@@ -54,7 +54,7 @@
     <p>Exemplo de uma busca:</p>
     <pre><code>{
   "type": "SEARCH",
-  "sticker_id": "FIG-12.PNG"
+  "sticker_id": "FIG-12"
   "origin_peer_id": "ALUNO03",
   "sender_peer_id": "ALUNO03",
   "receiver_peer_id": "ALUNO01",
