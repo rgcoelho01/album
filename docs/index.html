@@ -18,7 +18,7 @@
   <body>
     <h1>Sistema de Figurinhas P2P</h1>
 
-    <p>Cada aluno criará uma figurinha própria em formato JPG, e o sistema deverá permitir cadastrar figurinhas, consultar quais figurinhas um colega possui, buscar figurinhas na rede e realizar trocas entre pares.</p>
+    <p>Cada aluno criará uma figurinha própria em formato PNG, e o sistema deverá permitir cadastrar figurinhas, consultar quais figurinhas um colega possui, buscar figurinhas na rede e realizar trocas entre pares.</p>
 
     <h2>Visão Geral</h2>
     <p>Na primeira etapa, a descoberta de figurinhas deverá ser feita por inundação em uma rede P2P não estruturada. Cada grupo implementará seu sistema de forma independente, mas todos deverão seguir exatamente os padrões descritos abaixo para que seja possível realizar testes de interoperabilidade entre grupos.</p>
@@ -37,7 +37,7 @@
         <tr><td>Arquitetura</td><td>Rede P2P não estruturada, sem servidor central de busca.</td></tr>
         <tr><td>Transporte</td><td>WebSocket.</td></tr>
         <tr><td>Formato das mensagens</td><td>JSON UTF-8.</td></tr>
-        <tr><td>Identificador do nó</td><td>peer_id no formato ALUNOYY (ex.: ALUNO02). Seguindo a lista de chamada</td></tr>
+        <tr><td>Identificador do nó</td><td>peer_id no formato ALUNO-YY (ex.: ALUNO-02). <a href="lista-chamada.html">Seguindo a lista de chamada</a></td></tr>
         <tr><td>Identificador da figurinha</td><td>sticker_id no formato FIG-XX (ex.: FIG-12).</td></tr>
         <tr><td>Nome do arquivo JPG</td><td>FIG-XX.jpg.</td></tr>
         <tr><td>Porta de escuta</td><td>8080</td></tr>
@@ -51,20 +51,21 @@
     <p>Além disso, cada nó deverá manter uma lista de vizinhos conectados e permitir configuração simples desses vizinhos por arquivo ou interface de entrada.</p>
 
     <h2>Protocolo de mensagens</h2>
-    <p>Todas as mensagens deverão seguir esta estrutura mínima:</p>
+    <p>Exemplo de uma busca:</p>
     <pre><code>{
   "type": "SEARCH",
-  "message_id": "MSG-0001",
+  "sticker_id": "FIG-12.PNG"
   "origin_peer_id": "ALUNO03",
   "sender_peer_id": "ALUNO03",
   "receiver_peer_id": "ALUNO01",
-  "query_id": "UUIDRANDOM",
+  "query_id": "550e8400-e29b-41d4-a716-446655440000",
   "ttl": 7
 }</code></pre>
 
+
     <p>Tipos mínimos de mensagem que todos os grupos deverão implementar:</p>
     <ul>
-      <li><strong>HELLO</strong>: anuncia a presença de um nó para um vizinho.</li>
+      <li><strong><a href="protocolo-hello.html">HELLO</a></strong>: anuncia a presença de um nó para um vizinho.</li>
       <li><strong>SEARCH</strong>: busca uma figurinha específica na rede.</li>
       <li><strong>SEARCH_HIT</strong>: resposta positiva informando que a figurinha foi encontrada.</li>
       <li><strong>SEARCH_MISS</strong>: resposta opcional de não encontrada no nó local.</li>
