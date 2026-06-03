@@ -51,22 +51,10 @@
     <p>Além disso, cada nó deverá manter uma lista de vizinhos conectados e permitir configuração simples desses vizinhos por arquivo ou interface de entrada.</p>
 
     <h2>Protocolo de mensagens</h2>
-    <p>Exemplo de uma busca:</p>
-    <pre><code>{
-  "type": "SEARCH",
-  "sticker_id": "FIG-12"
-  "origin_peer_id": "ALUNO03",
-  "sender_peer_id": "ALUNO03",
-  "receiver_peer_id": "ALUNO01",
-  "query_id": "550e8400-e29b-41d4-a716-446655440000",
-  "ttl": 7
-}</code></pre>
-
-
     <p>Tipos mínimos de mensagem que todos os grupos deverão implementar:</p>
     <ul>
-      <li><strong><a href="protocolo-hello.html">HELLO</a></strong>: anuncia a presença de um nó para um vizinho.</li>
-      <li><strong>SEARCH</strong>: busca uma figurinha específica na rede.</li>
+      <li><strong>HELLO</strong>: anuncia a presença de um nó para um vizinho.</li>
+      <li><strong><a href="protocolo-search.html">SEARCH</a></strong>: busca uma figurinha específica na rede.</li>
       <li><strong>SEARCH_HIT</strong>: resposta positiva informando que a figurinha foi encontrada.</li>
       <li><strong>SEARCH_MISS</strong>: resposta opcional de não encontrada no nó local.</li>
       <li><strong>TRADE_OFFER</strong>: propõe uma troca.</li>

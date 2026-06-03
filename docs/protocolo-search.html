@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Protocolo SEARCH — Exemplo</title>
+    <style>
+      body { font-family: Arial, sans-serif; margin:20px; color:#111 }
+      h1,h2 { color:#1a237e }
+      p { max-width:900px }
+      pre { background:#f5f5f5; padding:12px; overflow:auto; border:1px solid #e0e0e0 }
+      code { font-family: monospace }
+      dl dt { font-weight:600; margin-top:8px }
+      dl dd { margin:0 0 8px 16px }
+    </style>
+  </head>
+  <body>
+    <h1>Protocolo: SEARCH</h1>
+
+    <h2>Como interpretar</h2>
+    <dl>
+      <dt>type</dt>
+      <dd>Tipo da mensagem, aqui <code>SEARCH</code>.</dd>
+
+      <dt>sticker_id</dt>
+      <dd>Figurinha procurada.</dd>
+
+      <dt>origin_peer_id</dt>
+      <dd>Nó que iniciou a busca.</dd>
+
+      <dt>sender_peer_id</dt>
+      <dd>Nó que está enviando esta cópia da mensagem.</dd>
+
+      <dt>receiver_peer_id</dt>
+      <dd>Vizinho que vai receber esta mensagem.</dd>
+
+      <dt>query_id</dt>
+      <dd>Identificador único global da busca, usado para evitar duplicatas.</dd>
+
+      <dt>ttl</dt>
+      <dd>Começa em 7 e vai diminuindo a cada repasse.</dd>
+    </dl>
+
+    <h2>Exemplo de busca</h2>
+    <p>Suponha que o <strong>ALUNO-03</strong> queira encontrar a figurinha <code>FIG-12</code>. Ele pode enviar a seguinte mensagem
+    para um vizinho:</p>
+    <pre><code>{{
+        "type": "SEARCH",
+        "message_id": "MSG-0001",
+        "origin_peer_id": "ALUNO03",
+        "sender_peer_id": "ALUNO03",
+        "receiver_peer_id": "ALUNO01",
+        "query_id": "550e8400-e29b-41d4-a716-446655440000",
+        "ttl": 7,
+        "sticker_id": "FIG-12.PNG"
+    }</code></pre>
+
+    <h2>Exemplo de reenvio</h2>
+    <p>Se o <strong>ALUNO-01</strong> receber essa busca e repassar para outro vizinho, a mensagem poderia ficar assim:</p>
+
+    <pre><code>{
+  "type": "SEARCH",
+  "message_id": "MSG-0002",
+  "origin_peer_id": "ALUNO-03",
+  "sender_peer_id": "ALUNO-01",
+  "receiver_peer_id": "ALUNO-05",
+  "query_id": "550e8400-e29b-41d4-a716-446655440000",
+  "ttl": 6,
+  "sticker_id": "FIG-12.PNG"
+}</code></pre>
+
+  </body>
+</html>
