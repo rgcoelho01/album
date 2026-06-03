@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Sistema de Figurinhas P2P</title>
+    <style>
+      body { font-family: Arial, sans-serif; line-height: 1.5; margin: 24px; color:#111 }
+      h1,h2 { color:#1a237e }
+      table { border-collapse: collapse; width:100%; max-width:900px; margin:12px 0 }
+      th,td { border:1px solid #ccc; padding:8px; text-align:left }
+      th { background:#e8eaf6 }
+      pre { background:#f5f5f5; padding:12px; overflow:auto }
+      code { font-family: monospace }
+      ul { margin:8px 0 16px 20px }
+    </style>
+  </head>
+  <body>
+    <h1>Sistema de Figurinhas P2P</h1>
+
+    <p>Cada aluno criará uma figurinha própria em formato JPG, e o sistema deverá permitir cadastrar figurinhas, consultar quais figurinhas um colega possui, buscar figurinhas na rede e realizar trocas entre pares.</p>
+
+    <h2>Visão Geral</h2>
+    <p>Na primeira etapa, a descoberta de figurinhas deverá ser feita por inundação em uma rede P2P não estruturada. Cada grupo implementará seu sistema de forma independente, mas todos deverão seguir exatamente os padrões descritos abaixo para que seja possível realizar testes de interoperabilidade entre grupos.</p>
+
+    <h2>Regras do trabalho</h2>
+    <p>Cada aluno será o autor de 1 figurinha única, identificada por um código exclusivo. A distribuição inicial das posses deverá considerar que um aluno pode ter cópias lógicas de figurinhas, registradas no inventário do sistema, mesmo que o arquivo de imagem exista em mais de um nó.</p>
+    <p>O sistema deverá funcionar sem servidor central para busca de figurinhas. Na busca por inundação, uma consulta recebida por um nó deve ser repassada aos vizinhos, exceto ao remetente, até que o TTL chegue a zero ou a figurinha seja encontrada; além disso, mensagens repetidas devem ser ignoradas por meio de um identificador único de consulta.</p>
+
+    <h2>Padrões obrigatórios</h2>
+    <p>Todos os grupos deverão implementar os mesmos padrões abaixo.</p>
+    <table>
+      <thead>
+        <tr><th>Item</th><th>Padrão obrigatório</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Arquitetura</td><td>Rede P2P não estruturada, sem servidor central de busca.</td></tr>
+        <tr><td>Transporte</td><td>WebSocket.</td></tr>
+        <tr><td>Formato das mensagens</td><td>JSON UTF-8.</td></tr>
+        <tr><td>Identificador do nó</td><td>peer_id no formato ALUNOYY (ex.: ALUNO02). Seguindo a lista de chamada</td></tr>
+        <tr><td>Identificador da figurinha</td><td>sticker_id no formato FIG-XX (ex.: FIG-12).</td></tr>
+        <tr><td>Nome do arquivo JPG</td><td>FIG-XX.jpg.</td></tr>
+        <tr><td>Porta de escuta</td><td>8080</td></tr>
+        <tr><td>Relógio lógico da busca</td><td>Campo ttl obrigatório em toda mensagem de busca. Padrão 7</td></tr>
+        <tr><td>Identificador da busca</td><td>Campo query_id obrigatório, globalmente único. UUID, gerar random</td></tr>
+        <tr><td>Prevenção de duplicatas</td><td>Cada nó deve manter histórico de query_id já processados.</td></tr>
+        <tr><td>Inventário</td><td>Lista das figurinhas possuídas pelo nó, com quantidade disponível para troca.</td></tr>
+      </tbody>
+    </table>
+
+    <p>Além disso, cada nó deverá manter uma lista de vizinhos conectados e permitir configuração simples desses vizinhos por arquivo ou interface de entrada.</p>
+
+    <h2>Protocolo de mensagens</h2>
+    <p>Todas as mensagens deverão seguir esta estrutura mínima:</p>
+    <pre><code>{
+  "type": "SEARCH",
+  "message_id": "MSG-0001",
+  "origin_peer_id": "ALUNO03",
+  "sender_peer_id": "ALUNO03",
+  "receiver_peer_id": "ALUNO01",
+  "query_id": "UUIDRANDOM",
+  "ttl": 7
+}</code></pre>
+
+    <p>Tipos mínimos de mensagem que todos os grupos deverão implementar:</p>
+    <ul>
+      <li><strong>HELLO</strong>: anuncia a presença de um nó para um vizinho.</li>
+      <li><strong>SEARCH</strong>: busca uma figurinha específica na rede.</li>
+      <li><strong>SEARCH_HIT</strong>: resposta positiva informando que a figurinha foi encontrada.</li>
+      <li><strong>SEARCH_MISS</strong>: resposta opcional de não encontrada no nó local.</li>
+      <li><strong>TRADE_OFFER</strong>: propõe uma troca.</li>
+      <li><strong>TRADE_ACCEPT</strong>: aceita a troca proposta.</li>
+      <li><strong>TRADE_REJECT</strong>: rejeita a troca proposta.</li>
+      <li><strong>TRANSFER_CONFIRM</strong>: confirma a atualização do inventário após a troca.</li>
+    </ul>
+
+    <p>Para a busca por inundação, o nó que recebe <code>SEARCH</code> deve verificar se já processou aquele <code>query_id</code>; se sim, descarta a mensagem, e se não, registra o identificador, verifica seu inventário e reenvia a consulta aos vizinhos com <code>ttl - 1</code> quando ainda houver alcance disponível. Esse uso de TTL e supressão de duplicatas é um padrão clássico para limitar o espalhamento da busca e evitar retransmissões redundantes.</p>
+
+    <h2>Regras de negócio</h2>
+    <p>Cada nó deverá representar um aluno e manter localmente: sua figurinha autoral, seu inventário atual, a lista de vizinhos e o histórico de buscas e trocas. A figurinha autoral do aluno não precisa ser removida do disco após uma troca, mas o sistema deve controlar a quantidade disponível para troca no inventário, para que a negociação faça sentido.</p>
+
+    <h3>Regras mínimas para a troca</h3>
+    <ul>
+      <li>Uma troca só pode ocorrer entre dois nós.</li>
+      <li>Cada proposta deve indicar claramente “ofereço” e “quero”.</li>
+      <li>Só é permitida troca se ambos os nós tiverem disponibilidade no inventário.</li>
+      <li>Ao concluir a troca, os dois nós devem atualizar seus inventários.</li>
+      <li>O sistema deve impedir inventário negativo.</li>
+    </ul>
+
+  </body>
+</html>
