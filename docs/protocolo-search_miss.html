@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Protocolo: SEARCH_MISS</title>
+    <style>
+      body { font-family: Arial, sans-serif; margin:20px; color:#111 }
+      h1 { color:#1a237e }
+      table { border-collapse: collapse; max-width:900px; margin:12px 0 }
+      th,td { border:1px solid #ccc; padding:8px; text-align:left }
+      th { background:#e8eaf6 }
+      pre { background:#f5f5f5; padding:12px; overflow:auto; border:1px solid #e0e0e0 }
+      code { font-family: monospace }
+    </style>
+  </head>
+  <body>
+    <h1>Protocolo: SEARCH_MISS</h1>
+
+    <p>Resposta opcional indicando que o nó local não possui a figurinha buscada. O envio é opcional — o protocolo não exige resposta negativa.</p>
+
+    <h2>Campos</h2>
+    <table>
+      <thead>
+        <tr><th>Campo</th><th>Obrigatório</th><th>Descrição</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><code>type</code></td><td>sim</td><td>Valor fixo <code>"SEARCH_MISS"</code></td></tr>
+        <tr><td><code>message_id</code></td><td>sim</td><td>UUID único da mensagem</td></tr>
+        <tr><td><code>origin_peer_id</code></td><td>sim</td><td>Nó que não possui a figurinha</td></tr>
+        <tr><td><code>sender_peer_id</code></td><td>sim</td><td>Nó que está enviando esta mensagem</td></tr>
+        <tr><td><code>receiver_peer_id</code></td><td>sim</td><td>Nó que iniciou a busca</td></tr>
+        <tr><td><code>query_id</code></td><td>sim</td><td>Mesmo <code>query_id</code> do SEARCH original</td></tr>
+        <tr><td><code>sticker_id</code></td><td>sim</td><td>Figurinha não encontrada</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Exemplo</h2>
+    <pre><code>{
+  "type": "SEARCH_MISS",
+  "message_id": "550e8400-e29b-41d4-a716-446655440005",
+  "origin_peer_id": "ALUNO-05",
+  "sender_peer_id": "ALUNO-05",
+  "receiver_peer_id": "ALUNO-03",
+  "query_id": "550e8400-e29b-41d4-a716-446655440000",
+  "sticker_id": "FIG-12"
+}</code></pre>
+
+  </body>
+</html>

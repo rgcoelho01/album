@@ -53,14 +53,14 @@
     <h2>Protocolo de mensagens</h2>
     <p>Tipos mínimos de mensagem que todos os grupos deverão implementar:</p>
     <ul>
-      <li><strong>HELLO</strong>: anuncia a presença de um nó para um vizinho.</li>
+      <li><strong><a href="protocolo-hello.html">HELLO</a></strong>: anuncia a presença de um nó para um vizinho.</li>
       <li><strong><a href="protocolo-search.html">SEARCH</a></strong>: busca uma figurinha específica na rede.</li>
-      <li><strong>SEARCH_HIT</strong>: resposta positiva informando que a figurinha foi encontrada.</li>
-      <li><strong>SEARCH_MISS</strong>: resposta opcional de não encontrada no nó local.</li>
-      <li><strong>TRADE_OFFER</strong>: propõe uma troca.</li>
-      <li><strong>TRADE_ACCEPT</strong>: aceita a troca proposta.</li>
-      <li><strong>TRADE_REJECT</strong>: rejeita a troca proposta.</li>
-      <li><strong>TRANSFER_CONFIRM</strong>: confirma a atualização do inventário após a troca.</li>
+      <li><strong><a href="protocolo-search_hit.html">SEARCH_HIT</a></strong>: resposta positiva informando que a figurinha foi encontrada.</li>
+      <li><strong><a href="protocolo-search_miss.html">SEARCH_MISS</a></strong>: resposta opcional de não encontrada no nó local.</li>
+      <li><strong><a href="protocolo-trade_offer.html">TRADE_OFFER</a></strong>: propõe uma troca.</li>
+      <li><strong><a href="protocolo-trade_accept.html">TRADE_ACCEPT</a></strong>: aceita a troca proposta.</li>
+      <li><strong><a href="protocolo-trade_reject.html">TRADE_REJECT</a></strong>: rejeita a troca proposta.</li>
+      <li><strong><a href="protocolo-transfer_confirm.html">TRANSFER_CONFIRM</a></strong>: confirma a atualização do inventário após a troca.</li>
     </ul>
 
     <p>Para a busca por inundação, o nó que recebe <code>SEARCH</code> deve verificar se já processou aquele <code>query_id</code>; se sim, descarta a mensagem, e se não, registra o identificador, verifica seu inventário e reenvia a consulta aos vizinhos com <code>ttl - 1</code> quando ainda houver alcance disponível. Esse uso de TTL e supressão de duplicatas é um padrão clássico para limitar o espalhamento da busca e evitar retransmissões redundantes.</p>

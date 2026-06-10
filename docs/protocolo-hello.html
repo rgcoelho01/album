@@ -3,70 +3,41 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Protocolo SEARCH — Exemplo</title>
+    <title>Protocolo: HELLO</title>
     <style>
       body { font-family: Arial, sans-serif; margin:20px; color:#111 }
-      h1,h2 { color:#1a237e }
-      p { max-width:900px }
+      h1 { color:#1a237e }
+      table { border-collapse: collapse; max-width:800px; margin:12px 0 }
+      th,td { border:1px solid #ccc; padding:8px; text-align:left }
+      th { background:#e8eaf6 }
       pre { background:#f5f5f5; padding:12px; overflow:auto; border:1px solid #e0e0e0 }
       code { font-family: monospace }
-      dl dt { font-weight:600; margin-top:8px }
-      dl dd { margin:0 0 8px 16px }
     </style>
   </head>
   <body>
-    <h1>Protocolo: SEARCH</h1>
+    <h1>Protocolo: HELLO</h1>
 
-    <h2>Como interpretar</h2>
-    <dl>
-      <dt>type</dt>
-      <dd>Tipo da mensagem, aqui <code>SEARCH</code>.</dd>
+    <p>Anuncia a presença de um nó para um vizinho. Também carrega a lista de peers conhecidos para facilitar a descoberta da rede. O nó que entra manda um hello e espera que o vizinho que mandou o hello, retorne a lista de peers.</p>
 
-      <dt>sticker_id</dt>
-      <dd>Figurinha procurada.</dd>
+    <h2>Campos</h2>
+    <table>
+      <thead>
+        <tr><th>Campo</th><th>Obrigatório</th><th>Descrição</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><code>type</code></td><td>sim</td><td>Valor fixo <code>"HELLO"</code></td></tr>
+        <tr><td><code>message_id</code></td><td>sim</td><td>UUID único da mensagem</td></tr>
+        <tr><td><code>sender_peer_id</code></td><td>sim</td><td>ID do nó que está enviando</td></tr>
+        <tr><td><code>peers</code></td><td>não</td><td>Lista de endereços de peers conhecidos (backup)</td></tr>
+      </tbody>
+    </table>
 
-      <dt>origin_peer_id</dt>
-      <dd>Nó que iniciou a busca.</dd>
-
-      <dt>sender_peer_id</dt>
-      <dd>Nó que está enviando esta cópia da mensagem.</dd>
-
-      <dt>receiver_peer_id</dt>
-      <dd>Vizinho que vai receber esta mensagem.</dd>
-
-      <dt>query_id</dt>
-      <dd>Identificador único global da busca, usado para evitar duplicatas.</dd>
-
-      <dt>ttl</dt>
-      <dd>Começa em 7 e vai diminuindo a cada repasse.</dd>
-    </dl>
-
-    <h2>Exemplo de busca</h2>
-    <p>Suponha que o <strong>ALUNO-03</strong> queira encontrar a figurinha <code>FIG-12</code>. Ele pode enviar a seguinte mensagem
-    para um vizinho:</p>
-    <pre><code>{{
-        "type": "SEARCH",
-        "message_id": "MSG-0001",
-        "origin_peer_id": "ALUNO03",
-        "sender_peer_id": "ALUNO03",
-        "receiver_peer_id": "ALUNO01",
-        "query_id": "550e8400-e29b-41d4-a716-446655440000",
-        "ttl": 7,
-        "sticker_id": "FIG-12.PNG"
-    }</code></pre>
-
-    <h2>Exemplo de reenvio</h2>
-    <p>Se o <strong>ALUNO-01</strong> receber essa busca e repassar para outro vizinho, a mensagem poderia ficar assim:</p>
-
+    <h2>Exemplo</h2>
     <pre><code>{
-  "type": "SEARCH",
-  "message_id": "MSG-0002",
-  "origin_peer_id": "ALUNO-03",
-  "sender_peer_id": "ALUNO-01",
-  "receiver_peer_id": "ALUNO-05",
-  "query_id": "550e8400-e29b-41d4-a716-446655440000",
-  "ttl": 6,
-  "sticker_id": "FIG-12.PNG"
+  "type": "HELLO",
+  "message_id": "550e8400-e29b-41d4-a716-446655440001",
+  "sender_peer_id": "ALUNO-23",
+  "peers": ["192.168.1.10", "192.168.1.11"]
 }</code></pre>
 
   </body>
